@@ -5,6 +5,7 @@ const USERS_MAP = {
   'control@yoops.hn': { label: 'Admin', views: ['laboratorio', 'mikele'] },
   'administracion@yoops.hn': { label: 'Laboratorio', views: ['laboratorio'] },
   'mikelempsps@gmail.com': { label: 'Mikele', views: ['mikele'] },
+  'willa.ia26@gmail.com': { label: 'Admin', views: ['laboratorio', 'mikele'] },
 }
 
 export const APPROVED_EMAILS = Object.keys(USERS_MAP)
