@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍨</text></svg>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Control de pesos de inventario para Mikele Gelato - Transferencias y Recepciones" />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <title>Mikele Inventario - Control de Pesos</title>
+    <style>
+      #app-fallback {
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        min-height: 100vh; background: #08080f; color: #f0f0f5;
+        font-family: 'Outfit', sans-serif; text-align: center; padding: 2rem;
+      }
+      #app-fallback .spinner {
+        width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1);
+        border-top-color: #ff6b8a; border-radius: 50%;
+        animation: spin 0.8s linear infinite; margin-bottom: 1rem;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      #app-error { display: none; color: #ff6b8a; margin-top: 1rem; font-size: 0.85rem;
+        background: rgba(255,107,138,0.1); padding: 1rem; border-radius: 8px; max-width: 500px;
+        text-align: left; word-break: break-word; }
+    </style>
+    <script>
+      window.onerror = function(msg, src, line, col, err) {
+        var el = document.getElementById('app-error');
+        if (el) { el.style.display = 'block'; el.textContent = msg + ' (line ' + line + ')'; }
+      };
+      window.addEventListener('unhandledrejection', function(e) {
+        var el = document.getElementById('app-error');
+        if (el) { el.style.display = 'block'; el.textContent = 'Promise error: ' + (e.reason?.message || e.reason || 'unknown'); }
+      });
+    </script>
+    <script type="module" crossorigin src="/mikele-inventario/assets/index-3KIeCX9a.js"></script>
+    <link rel="stylesheet" crossorigin href="/mikele-inventario/assets/index-C2RQT7Ou.css">
+  </head>
+  <body>
+    <div id="root">
+      <div id="app-fallback">
+        <div class="spinner"></div>
+        <p>Cargando Mikele...</p>
+        <div id="app-error"></div>
+      </div>
+    </div>
+  </body>
+</html>
