@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
-import { useRole } from '../context/AuthContext'
+import { useRole } from '../context/AppContext'
 
 function NuevoRegistro({ onRegistroCreado }) {
   const { role } = useRole()

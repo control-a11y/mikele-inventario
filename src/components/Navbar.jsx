@@ -1,21 +1,23 @@
-import { useAuth } from '../context/AuthContext'
+import { useApp } from '../context/AppContext'
 import { useNavigate } from 'react-router-dom'
 
 function Navbar() {
-  const { user, permissions, activeView, setActiveView, signOut } = useAuth()
+  const { role, clearRole, isAdmin, adminUser, adminSignOut, selectRole } = useApp()
   const navigate = useNavigate()
 
-  async function handleLogout() {
-    await signOut()
-    navigate('/login')
+  function handleChangeView() {
+    clearRole()
+    navigate('/')
   }
 
   function handleViewSwitch(view) {
-    setActiveView(view)
+    selectRole(view)
     navigate(`/${view}`)
   }
 
-  const isAdmin = permissions?.views.length > 1
+  async function handleAdminLogout() {
+    await adminSignOut()
+  }
 
   return (
     <nav className="navbar" id="main-navbar">
@@ -29,28 +31,28 @@ function Navbar() {
             <span className="navbar-role role-admin">👑 Admin</span>
             <div className="nav-tabs">
               <button
-                className={`nav-tab ${activeView === 'laboratorio' ? 'active' : ''}`}
+                className={`nav-tab ${role === 'laboratorio' ? 'active' : ''}`}
                 onClick={() => handleViewSwitch('laboratorio')}
               >
                 🔬 Lab
               </button>
               <button
-                className={`nav-tab ${activeView === 'mikele' ? 'active' : ''}`}
+                className={`nav-tab ${role === 'mikele' ? 'active' : ''}`}
                 onClick={() => handleViewSwitch('mikele')}
               >
                 🍨 Mikele
               </button>
             </div>
+            <button className="btn-logout" onClick={handleAdminLogout}>Salir Admin</button>
           </>
         ) : (
-          <span className={`navbar-role ${activeView === 'laboratorio' ? 'role-laboratorio' : 'role-mikele'}`}>
-            {activeView === 'laboratorio' ? '🔬 Laboratorio' : '🍨 Mikele'}
-          </span>
+          <>
+            <span className={`navbar-role ${role === 'laboratorio' ? 'role-laboratorio' : 'role-mikele'}`}>
+              {role === 'laboratorio' ? '🔬 Laboratorio' : '🍨 Mikele'}
+            </span>
+            <button className="btn-switch" onClick={handleChangeView}>↩ Cambiar Vista</button>
+          </>
         )}
-        <span className="navbar-email">{user?.email}</span>
-        <button id="btn-logout" className="btn-logout" onClick={handleLogout}>
-          Cerrar Sesión
-        </button>
       </div>
     </nav>
   )
