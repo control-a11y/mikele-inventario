@@ -16,7 +16,7 @@ function TablaMikele({ refreshKey }) {
     setLoading(true)
     const { data, error } = await supabase
       .from('Transferencias')
-      .select('id, created_at, producto, transferencia, recepcion, estado, creado_por_rol')
+      .select('id, created_at, producto, transferencia, recepcion, estado, creado_por_rol, creado_por')
       .order('created_at', { ascending: false })
 
     if (!error && data) {
@@ -115,8 +115,13 @@ function TablaMikele({ refreshKey }) {
                   return (
                     <tr key={r.id} className={`${r.estado === 'completado' ? 'row-completed' : ''} ${needsMine ? 'row-needs-input' : ''}`}>
                       <td className="td-producto">
-                        <span>{r.producto}</span>
-                        {!isMine && needsMine && <span className="tag-from">de Laboratorio</span>}
+                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                          <span style={{ fontWeight: 600 }}>{r.producto}</span>
+                          <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)', marginTop: '0.15rem' }}>
+                            Creado por: {r.creado_por || (r.creado_por_rol === 'laboratorio' ? 'Laboratorio' : 'Mikele')}
+                          </span>
+                        </div>
+                        {!isMine && needsMine && <span className="tag-from" style={{ marginTop: '0.25rem' }}>de Laboratorio</span>}
                       </td>
                       <td className="td-peso">
                         {isEditing ? (
@@ -167,7 +172,12 @@ function TablaMikele({ refreshKey }) {
               return (
                 <div key={r.id} className={`record-card ${needsMine ? 'card-needs-input' : ''} ${r.estado === 'completado' ? 'card-completed' : ''}`}>
                   <div className="record-card-header">
-                    <span className="record-card-producto">{r.producto}</span>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <span className="record-card-producto">{r.producto}</span>
+                      <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.4)', marginTop: '0.15rem' }}>
+                        Creado por: {r.creado_por || (r.creado_por_rol === 'laboratorio' ? 'Laboratorio' : 'Mikele')}
+                      </span>
+                    </div>
                     <span className={`badge badge-${r.estado}`}>
                       {r.estado === 'pendiente' ? '⏳' : '✅'}
                     </span>

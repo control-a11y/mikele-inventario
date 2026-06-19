@@ -2,22 +2,17 @@ import { useApp } from '../context/AppContext'
 import { useNavigate } from 'react-router-dom'
 
 function Navbar() {
-  const { role, clearRole, isAdmin, adminUser, adminSignOut, selectRole } = useApp()
+  const { usuario, role, logout } = useApp()
   const navigate = useNavigate()
 
-  function handleChangeView() {
-    clearRole()
+  function handleLogout() {
+    logout()
     navigate('/')
   }
 
-  function handleViewSwitch(view) {
-    selectRole(view)
-    navigate(`/${view}`)
-  }
-
-  async function handleAdminLogout() {
-    await adminSignOut()
-  }
+  const isLab = role === 'laboratorio'
+  const displayRole = isLab ? '🔬 Laboratorio' : '🍨 Recepción'
+  const badgeClass = isLab ? 'role-laboratorio' : 'role-mikele'
 
   return (
     <nav className="navbar" id="main-navbar">
@@ -26,31 +21,14 @@ function Navbar() {
         <span className="navbar-title">Mikele</span>
       </div>
       <div className="navbar-info">
-        {isAdmin ? (
+        {usuario && (
           <>
-            <span className="navbar-role role-admin">👑 Admin</span>
-            <div className="nav-tabs">
-              <button
-                className={`nav-tab ${role === 'laboratorio' ? 'active' : ''}`}
-                onClick={() => handleViewSwitch('laboratorio')}
-              >
-                🔬 Lab
-              </button>
-              <button
-                className={`nav-tab ${role === 'mikele' ? 'active' : ''}`}
-                onClick={() => handleViewSwitch('mikele')}
-              >
-                🍨 Mikele
-              </button>
-            </div>
-            <button className="btn-logout" onClick={handleAdminLogout}>Salir Admin</button>
-          </>
-        ) : (
-          <>
-            <span className={`navbar-role ${role === 'laboratorio' ? 'role-laboratorio' : 'role-mikele'}`}>
-              {role === 'laboratorio' ? '🔬 Laboratorio' : '🍨 Mikele'}
+            <span className={`navbar-role ${badgeClass}`}>
+              {displayRole}: <strong>{usuario.nombre}</strong>
             </span>
-            <button className="btn-switch" onClick={handleChangeView}>↩ Cambiar Vista</button>
+            <button className="btn-logout" onClick={handleLogout}>
+              🚪 Cerrar Sesión
+            </button>
           </>
         )}
       </div>
